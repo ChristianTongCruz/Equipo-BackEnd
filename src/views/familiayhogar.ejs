@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Familiar y Hogar</title>
+  <link rel="stylesheet" href="/src/css/familiayhogar.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+</head>
+
+<body id="b">
+  <div class="container" style="display: flex; justify-content: center; align-items: center; height: auto;">
+    <form action="/familia" method="post" id="miFormulario">
+      <p style="font-size: 24px; font-weight: bold;">Familia y Hogar </p>
+      <hr>
+      <p style=" margin-bottom: 5px; margin-left: 1px;">1.¿Cuantas Familias viven aqui?</p>
+      <div class="form-floating">
+        <input type="number" class="form-control" id="familia" placeholder="familias" name="familias" required>
+        <label for="floatingInput">Escribe Aqui</label>
+      </div>
+      <br>
+      <p style=" margin-bottom: 5px; margin-left: 1px;">2.¿Cuantas Personas viven aqui permanentemente?</p>
+      <div class="" style="text-align: center;">
+        <label for="hombresInput" style="display: inline-block;">Hombres:</label>
+        <input type="number" class="form-control" id="hombresInput" placeholder="Hombres" style="display: inline-block;"
+          value="0" name="hombres" required>
+
+        <label for="mujeresInput" style="display: inline-block;">Mujeres:</label>
+        <input type="number" name="mujeres" class="form-control" id="mujeresInput" placeholder="Mujeres"
+          style="display: inline-block" value="0" required>
+
+        <label for="mujeresInput" style="display: inline-block; width: 100px;">Total:</label>
+        <input type="number" class="form-control" id="totalInput" placeholder="Total"
+          style="display: inline-block; width: 105px;" name="total" readonly required>
+      </div>
+      <p style=" margin-top: 5px; margin-bottom: 5px; margin-left: 1px;">3.¿Cuantos años reside en esta vivienda?</p>
+      <div class="form-floating">
+        <input type="number" class="form-control" id="floatingInput" placeholder="years" name="years" required>
+        <label for="floatingInput">Escribe Aqui Cuantos Años</label>
+      </div>
+      <div class="radio mb-3">
+        <p style="margin-top: 5px; margin-bottom: 8px; margin-left: 1px;">4.¿Alguna Mujer en estado de gestion?</p>
+        <label>
+          <input type="radio" name="estado" value="si" required> Si
+        </label>
+        <label>
+          <input type="radio" name="estado" value="no" required> No
+        </label>
+      </div>
+      <div class="radio mb-3">
+        <p style="margin-top: 5px; margin-bottom: 8px; margin-left: 1px;"> 5.¿Algun miembro de la familia con habilidades
+          diferentes?</p>
+        <label>
+          <input type="radio" name="habilidades" value="si" required> Si
+        </label>
+        <label>
+          <input type="radio" name="habilidades" value="no" required> No
+        </label>
+      </div>
+      <div class="radio mb-3">
+        <p style="margin-top: 5px; margin-bottom: 8px; margin-left: 1px;"> 6.¿Quien toma las decisiones en la familia?</p>
+        <label>
+          <input type="radio" name="decisiones" value="papa" required> Papá
+        </label>
+        <label>
+          <input type="radio" name="decisiones" value="mama" required> Mamá
+        </label>
+        <label>
+          <input type="radio" name="decisiones" value="ambos" required> Ambos
+        </label>
+        <label style="margin-left: 10px;">
+          <input type="radio" name="decisiones" value="otros" required> Otros Casos
+          <input type="text" style="border-color: rgb(134, 136, 136); border-radius: 5px;" id="otro"
+            placeholder="Especifique" name="otros" disabled required>
+        </label>
+      </div>
+      <div class="radio mb-3">
+        <p style="margin-top: 5px; margin-bottom: 8px; margin-left: 1px;">7.¿Posee Algun tipo de seguro?</p>
+        <label>
+          <input type="radio" name="seguro" id="seguroSi" value="si" onchange="habilitarCampo()" required> Si
+        </label>
+        <label>
+          <input type="radio" name="seguro" id="seguroNo" value="no" onchange="deshabilitarCampo()" required> No
+        </label>
+        <label>
+          <strong style="margin-left: 5px;"> Si respondio "Si", que seguro</strong>
+          <input style="border-color: rgb(134, 136, 136); border-radius: 5px;" type="text" name="tiposeguro"
+            id="tiposeguro" placeholder="Escriba Aqui " disabled required>
+        </label>
+      </div>
+      <br>
+      <button onclick="actualizarTotal()" class="w-100 btn btn-lg btn-primary" type="submit">Registrar</button>
+    </form>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+
+
+  <script>
+    // Obtener los campos de entrada de número
+    let hombresInput = document.getElementById("hombresInput");
+    let mujeresInput = document.getElementById("mujeresInput");
+    let totalInput = document.getElementById("totalInput");
+
+
+
+    // Escuchar los cambios en los campos de entrada de número
+    hombresInput.addEventListener("input", sumar);
+    mujeresInput.addEventListener("input", sumar);
+
+
+    // Función para sumar los valores de los campos de entrada de número
+    function sumar() {
+      // Obtener los valores de los campos de entrada de número
+      let hombres = parseInt(hombresInput.value);
+      let mujeres = parseInt(mujeresInput.value);
+
+      // Sumar los valores y establecer el resultado en el campo de entrada "Total"
+      totalInput.value = hombres + mujeres;
+    }
+
+
+  </script>
+
+
+
+
+
+  <script>
+    // Obtener los elementos de radio y campo de texto
+    const radioButtons = document.getElementsByName('decisiones');
+    const otroInput = document.getElementById('otro');
+
+    // Agregar un evento para escuchar los cambios en las opciones de radio
+    radioButtons.forEach((radio) => {
+      radio.addEventListener('change', () => {
+        // Si se selecciona "Otro Casos", habilitar el campo de texto
+        if (radio.value === 'mama' || radio.value === 'papa' || radio.value === 'ambos') {
+          otroInput.disabled = true;
+        } else if (radio.value === 'otros') {
+          // De lo contrario, deshabilitar el campo de texto
+          otroInput.disabled = false;
+        }
+      });
+    });
+
+  </script>
+
+
+  <script>
+
+    function habilitarCampo() {
+      document.getElementById("tiposeguro").disabled = false;
+    }
+
+    function deshabilitarCampo() {
+      document.getElementById("tiposeguro").disabled = true;
+    }
+  </script>
+
+
+
+
+
+</body>
+
+</html>
