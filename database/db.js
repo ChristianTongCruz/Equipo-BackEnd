@@ -1,17 +1,12 @@
-const mysql = require('mysql2'); // o 'mysql' si prefieres
+const { createPool } = require("mysql2/promise"); // o 'mysql' si prefieres
 
 // Crea el pool de conexiones
-const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: '',
+const pool = createPool({
+  host: "localhost",
+  user: "root",
+  password: "1234",
   port: 3306,
-  database: 'prueba'
+  database: "prueba",
 });
-
-
-
-
-
 // Exporta el pool para que pueda ser utilizado desde otros módulos
 module.exports = pool;
