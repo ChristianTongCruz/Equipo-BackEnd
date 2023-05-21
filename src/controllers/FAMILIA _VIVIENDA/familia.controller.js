@@ -1,47 +1,42 @@
 const pool = require("../../../database/db.js");
-const getFamilia = (req, res) => {
-  res.render("familiayhogar");
+const getFamilia = async (req, res) => {
+  const [resultado] = await pool.query("select *from familia_vivienda");
+  res.json(resultado);
 };
-
-const postFamilia = async (req, res) => {
+const getFamiliabyid = async (req, res) => {
+  const { id } = req.params;
+  const [resultado] = await pool.query(
+    "select *from familia_vivienda where id_familia_vivienda = ?",
+    [id]
+  );
+  res.json(resultado);
+};
+const postfamiliavivienda = async (req, res) => {
+  // aqui iran los valores name de cada input del form del que enviaran los datos
   const {
-    familias,
-    hombres,
-    mujeres,
-    total,
-    years,
-    estado,
-    habilidades,
-    decisiones,
-    otros,
-    seguro,
-    tiposeguro,
-  } = req.body; //el body ya viene incluido con el express, el body lo que hace es  acceder a los datos enviados en el cuerpo de la solicitud
+    valor1,
+    valor2,
+    valor3,
+    valor4,
+    valor5,
+    valor6,
+    valor7,
+    valor8,
+    valor9,
+  } = req.body;
   try {
     await pool.query(
-      "INSERT INTO familiayhogar (familias, hombres, mujeres, total, years, estado, habilidades , decisiones, otros , seguro , tiposeguro) VALUES (?, ?, ? ,? , ? , ? , ? , ? ,? , ?,?)",
-      [
-        familias,
-        hombres,
-        mujeres,
-        total,
-        years,
-        estado,
-        habilidades,
-        decisiones,
-        otros,
-        seguro,
-        tiposeguro,
-      ]
+      "INSERT INTO familia_vivienda (familias_viven_vivienda, personas_viven_permanentemente_hombres, personas_viven_permanentemente_mujeres, personas_viven_permanentemente_total, anos_reside_vivienda, mujer_gestacion, miembro_habilidades_diferentes, toma_decisiones_familia, posee_tipo_seguro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [valor1, valor2, valor3, valor4, valor5, valor6, valor7, valor8, valor9]
     );
-    console.log("Datos Insertados a la base de datos con exito papu :v");
-    res.render("familiayhogar");
+    res.send("DATOS GUARDADOS CORRECTAMENTE");
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .send("Ocurrió un error al insertar los datos en la base de datos");
   }
 };
 
-module.exports = { getFamilia, postFamilia };
+module.exports = {
+  getFamilia,
+  getFamiliabyid,
+  postfamiliavivienda,
+};

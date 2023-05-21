@@ -1,24 +1,43 @@
 const pool = require("../../../database/db.js");
-const getComunitrafa = (req, res) => {
-  res.send("merco gei");
+const getComunitrafa = async (req, res) => {
+  const [resultado] = await pool.query(
+    "select *from comunicacion_intrafamiliar"
+  );
+  res.json(resultado);
 };
-
-const postComunitrada = async (req, res) => {
-  const { exiscom, comPareja, comPadres, comHermanos } = req.body;
+const getComunitrafabyid = async (req, res) => {
+  const { id } = req.params;
+  const [resultado] = await pool.query(
+    "SELECT *FROM comunicacion_intrafamiliar WHERE id_comunicacion_intrafamiliar =?",
+    [id]
+  );
+  res.json(resultado);
+};
+const postComuintrafa = async (req, res) => {
+  // aqui iran los valores name de cada input del form del que enviaran los datos
+  const {
+    comunicacion_permanente_familia,
+    comunicacion_trato_pareja_familia,
+    comunicacion_padres_hijo,
+    comunicacion_hermanos,
+  } = req.body;
   try {
     await pool.query(
-      "INSERT INTO comintrafam (exiscom, comPareja, comPadres, comHermanos) VALUES (?, ?, ?, ?)",
-      [exiscom, comPareja, comPadres, comHermanos]
+      "INSERT INTO basepalmas.comunicacion_intrafamiliar (comunicacion_permanente_familia,comunicacion_trato_pareja_familia,comunicacion_padres_hijo,comunicacion_hermanos) VALUES (?,?,?,?)",
+      [
+        comunicacion_permanente_familia,
+        comunicacion_trato_pareja_familia,
+        comunicacion_padres_hijo,
+        comunicacion_hermanos,
+      ]
     );
-    res.send("Datos guardados correctamente uwu");
+    res.send("EXITO AL INGRESAR A LA BASE DE DATOS");
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .send("Ocurrió un error al insertar los datos en la base de datos");
   }
 };
 module.exports = {
   getComunitrafa,
-  postComunitrada,
+  getComunitrafabyid,
+  postComuintrafa,
 };

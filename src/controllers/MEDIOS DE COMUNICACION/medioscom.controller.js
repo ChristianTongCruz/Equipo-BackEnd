@@ -1,26 +1,31 @@
 const pool = require("../../../database/db.js");
-const getmediocom = (req, res) => {
-  res.send("hola buenas tardes");
+const getmediocom = async (req, res) => {
+  const [resultado] = await pool.query("select *from medios_comunicacion");
+  res.json(resultado);
 };
-
-const postmediocom = async (req, res) => {
-  const { mediocom, mediotrans, viapredominante, buenestado } = req.body;
-  const mediocomJSON = JSON.stringify(mediocom);
-  const mediotransJSON = JSON.stringify(mediotrans);
+const getmediocombyid = async (req, res) => {
+  const { id } = req.params;
+  const [resultado] = await pool.query(
+    "select *from medios_comunicacion where id_medios_comunicacion = ?",
+    [id]
+  );
+  res.json(resultado);
+};
+const postmedioscom = async (req, res) => {
+  // aqui iran los valores name de cada input del form del que enviaran los datos
+  const { valor1, valor2, valor3, valor4 } = req.body;
   try {
     await pool.query(
-      "INSERT INTO medioscom (mediocom, mediotrans, viapredominante, buenestado)VALUES (?, ?, ?, ?)",
-      [mediocomJSON, mediotransJSON, viapredominante, buenestado]
+      "INSERT INTO medios_comunicacion (medios_comunicacion_acceso_familia, medio_transporte_utiliza_localidad, via_predominante_localidad, buen_estado_via) VALUES (?, ?, ?, ?)",
+      [valor1, valor2, valor3, valor4]
     );
-    res.send("exito al ingresar a la base de datos");
+    res.send("DATOS GUARDADOS CORRECTAMENTE");
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .send("Ocurrió un error al insertar los datos en la base de datos");
   }
 };
 module.exports = {
   getmediocom,
-  postmediocom,
+  getmediocombyid,
+  postmedioscom,
 };

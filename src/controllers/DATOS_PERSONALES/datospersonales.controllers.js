@@ -1,25 +1,33 @@
 //exporto mi base de datos para usar
 const pool = require("../../../database/db.js");
 
-const getdatospersonales = (req, res) => {
-  res.render("datospersonales");
+const getdatospersonales = async (req, res) => {
+  const [resultado] = await pool.query("select *from datos_generales");
+  res.json(resultado);
 };
-
-const datospersonales = async (req, res) => {
-  const { lugar, edad, sexo, estado, reside, pisos } = req.body; //el body ya viene incluido con el express, el body lo que hace es  acceder a los datos enviados en el cuerpo de la solicitud
+const getdatospersonalesbyid = async (req, res) => {
+  const { id } = req.params;
+  const [resultado] = await pool.query(
+    "select *from datos_generales where id_datos_generales=?",
+    [id]
+  );
+  res.json(resultado);
+};
+const postdatospersonales = async (req, res) => {
+  // aqui iran los valores name de cada input del form del que enviaran los datos
+  const { valor1, valor2, valor3, valor4, valor5, valor6 } = req.body;
   try {
     await pool.query(
-      "INSERT INTO datospersonales (lugar, edad, sexo, estado, reside, pisos) VALUES (?, ?, ? ,? , ?,?)",
-      [lugar, edad, sexo, estado, reside, pisos]
+      "INSERT INTO datos_generales(lugar_nacimiento, sexo, edad, estado_civil, residencia_permanente_vivienda, numero_piso_vivienda)VALUES (?, ?, ?, ?, ?, ?)",
+      [valor1, valor2, valor3, valor4, valor5, valor6]
     );
-    console.log("Datos Insertados a la base de datos con exito papu :v");
-    res.render("datospersonales");
+    res.send("DATOS GUARDADOS CORRECTAMENTE");
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .send("Ocurrió un error al insertar los datos en la base de datos");
   }
 };
-
-module.exports = { getdatospersonales, datospersonales };
+module.exports = {
+  getdatospersonales,
+  getdatospersonalesbyid,
+  postdatospersonales,
+};

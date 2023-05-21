@@ -1,56 +1,58 @@
 const pool = require("../../../database/db.js");
-const getEducacion = (req, res) => {
-  res.send("*se muesta la vista de la vivienda*");
+const getEducacion = async (req, res) => {
+  const [resultado] = await pool.query("select *from educacion");
+  res.json(resultado);
 };
-
+const getEducacionbyid = async (req, res) => {
+  const { id } = req.params;
+  const [resultado] = await pool.query(
+    "select *from educacion where id_educacion=?",
+    [id]
+  );
+  res.json(resultado);
+};
 const postEducacion = async (req, res) => {
+  // aqui iran los valores name de cada input del form del que enviaran los datos
   const {
-    idiomaniñez,
-    leeryescribir,
-    estudio_papa,
-    estudio_mama,
-    estudio_hijo,
-    estudio_hija,
-    tiene_hijos,
-    localidad_cuenta,
-    medio_movilizar,
-    tiene_computadora,
-    tiene_biblioteca,
-    servicios_basicos,
+    valor1,
+    valor2,
+    valor3,
+    valor4,
+    valor5,
+    valor6,
+    valor7,
+    valor8,
+    valor9,
+    valor10,
+    valor11,
+    valor12,
   } = req.body;
-  //LAS PREGUNTAS DE OPCION MULTIPLE SE INGRESARAN EN FORMATO JSON PARA EL MEJOR MANEJO DE LOS DATOS Y NO HACER LAS COSAS POR SEPARADO
-  const localidad_cuentaJson = JSON.stringify(req.body.localidad_cuenta);
-  const medio_movilizarJson = JSON.stringify(req.body.medio_movilizar);
-  const servicios_basicosJson = JSON.stringify(req.body.servicios_basicos);
-  console.log(localidad_cuentaJson);
   try {
     await pool.query(
-      "INSERT INTO prueba.educacion(idiomaniñez,leeryescribir,estudio_papa,estudio_mama,estudio_hijo,estudio_hija,tiene_hijos,localidad_cuenta,medio_movilizar,tiene_computadora,tiene_biblioteca,servicios_basicos)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO educacion (lenguaje_aprendio_ninez, leer_escribir, nivel_estudio_papa, nivel_estudio_mama, nivel_estudio_hijo1, nivel_estudio_hijo2, hijos_escolar_no_asisten, localidad_cuenta, medio_movilizarse, ie_ccpp_las_palmas_computadoras, ie_ccpp_las_palmas_biblioteca, ie_ccpp_las_palmas_servicios_basicos) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [
-        idiomaniñez,
-        leeryescribir,
-        estudio_papa,
-        estudio_mama,
-        estudio_hijo,
-        estudio_hija,
-        tiene_hijos,
-        localidad_cuentaJson,
-        medio_movilizarJson,
-        tiene_computadora,
-        tiene_biblioteca,
-        servicios_basicosJson,
+        valor1,
+        valor2,
+        valor3,
+        valor4,
+        valor5,
+        valor6,
+        valor7,
+        valor8,
+        valor9,
+        valor10,
+        valor11,
+        valor12,
       ]
     );
-    res.send("exito al ingresar a la base de datos");
+    res.send("DATOS GUARDADOS CORRECTAMENTE");
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .send("Ocurrió un error al insertar los datos en la base de datos");
   }
 };
 
 module.exports = {
   getEducacion,
+  getEducacionbyid,
   postEducacion,
 };

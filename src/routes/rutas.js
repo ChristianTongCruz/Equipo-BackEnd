@@ -1,60 +1,62 @@
 const express = require("express");
 const {
   getdatospersonales,
-  datospersonales,
+  getdatospersonalesbyid,
+  postdatospersonales,
 } = require("../controllers/DATOS_PERSONALES/datospersonales.controllers.js");
 const {
-  postFamilia,
   getFamilia,
+  getFamiliabyid,
+  postfamiliavivienda,
 } = require("../controllers/FAMILIA _VIVIENDA/familia.controller.js");
 const {
   getVivienda,
-  postVivienda,
+  getViviendabyid,
+  postvivienda,
 } = require("../controllers/FAMILIA _VIVIENDA/vivienda.controller.js");
 const {
   getEducacion,
+  getEducacionbyid,
   postEducacion,
 } = require("../controllers/EDUCACION/educacion.controller.js");
 const {
   getComunitrafa,
-  postComunitrada,
+  postComuintrafa,
+  getComunitrafabyid,
 } = require("../controllers/COMUNICACION INTRAFAMILIAR/comuintrafa.controller.js");
 const {
   getmediocom,
-  postmediocom,
+  getmediocombyid,
+  postmedioscom,
 } = require("../controllers/MEDIOS DE COMUNICACION/medioscom.controller.js");
 const router = express.Router();
 
-//defino mis rutas
-
-// RUTA PRINCIPAL
-
 router.get("/", (req, res) => {
-  res.send(` <h1>ACA PON LAS RUTAS QUE TENEMOS </h1> 
-  CLICKEA CUALQUIERA :v 
-  <a href="http://localhost:3000/datospersonales">DATOS PERSONALES</a>
-  <a href="http://localhost:3000/familia">FAMILIA Y HOGAR</a>
-  `);
+  res.send(`AQUI DEBERIA ESTAR TU INDEX`);
 });
 
 //I.DATOS PERSONALES
 router.get("/datospersonales", getdatospersonales);
-router.post("/datospersonales", datospersonales);
-
+router.get("/datospersonales/:id", getdatospersonalesbyid);
+router.post("/datospersonales", postdatospersonales);
 //II.FAMILIA
-
 router.get("/familia", getFamilia);
-router.post("/familia", postFamilia);
+router.get("/familia/:id", getFamiliabyid);
+router.post("/familia", postfamiliavivienda);
 //II.1.VIVIENDA
 router.get("/vivienda", getVivienda);
-router.post("/vivienda", postVivienda);
+router.get("/vivienda/:id", getViviendabyid);
+router.post("vivienda", postvivienda);
 ///III.EDUCACUON
 router.get("/educacion", getEducacion);
+router.get("/educacion/:id", getEducacionbyid);
 router.post("/educacion", postEducacion);
 ///IV.COMUNICACION INTRAFAMILIAR
 router.get("/intrafamiliar", getComunitrafa);
-router.post("/intrafamiliar", postComunitrada);
+router.get("/intrafamiliar/:id", getComunitrafabyid);
+router.post("/intrafamiliar", postComuintrafa);
 ///V.MEDIOS DE COMUNICACION
 router.get("/medioscom", getmediocom);
-router.post("/medioscom", postmediocom);
+router.get("/medioscom/:id", getmediocombyid);
+router.post("/medioscom", postmedioscom);
 module.exports = router;
